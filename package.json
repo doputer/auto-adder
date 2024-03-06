@@ -1,0 +1,8 @@
+{
+  "type": "module",
+  "dependencies": {
+    "hast-util-find-and-replace": "^5.0.1",
+    "hast-util-from-html": "^2.0.1",
+    "hast-util-to-html": "^9.0.0"
+  }
+}
