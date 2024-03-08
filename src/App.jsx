@@ -2,11 +2,11 @@ import Progress from '@/components/Progress';
 
 function App() {
   return (
-    <>
-      <div className="m-0 mx-auto mt-16 w-[480px]">
+    <div className="flex h-screen w-screen items-center justify-center bg-violet-500">
+      <div className="w-full max-w-[480px] rounded-xl bg-white p-8">
         <Progress />
       </div>
-    </>
+    </div>
   );
 }
 
