@@ -15,7 +15,7 @@ function Upload() {
   };
 
   return (
-    <div className="h-16 w-full">
+    <div className="h-96 w-full">
       {isComplete ? (
         <div className="flex size-full select-none items-center justify-center rounded border-2 border-dashed border-blue-500 text-blue-500">
           Complete!

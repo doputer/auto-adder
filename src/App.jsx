@@ -7,8 +7,8 @@ function App() {
     <div className="flex h-screen w-screen items-center justify-center bg-violet-500">
       <div className="w-full max-w-2xl space-y-16 rounded-xl bg-white p-8">
         <Progress />
-        {/* <Upload /> */}
-        <Matrix />
+        <Upload />
+        {/* <Matrix /> */}
       </div>
     </div>
   );
