@@ -3,6 +3,7 @@ import { useRecoilValue } from 'recoil';
 import Progress from '@/components/Progress';
 import Upload from '@/components/Upload';
 import Matrix from '@/components/Matrix';
+import Download from '@/components/Download';
 import { stepState } from '@/stores/stepState';
 
 function App() {
@@ -14,6 +15,7 @@ function App() {
         <Progress />
         {step === 1 && <Upload />}
         {step === 2 && <Matrix />}
+        {step === 3 && <Download />}
       </div>
     </div>
   );
