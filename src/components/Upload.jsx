@@ -1,22 +1,27 @@
-import { useRef, useState } from 'react';
+import { useRef } from 'react';
+import { useRecoilState } from 'recoil';
+
+import { dataState } from '@/stores/dataState';
 
 function Upload() {
   const ref = useRef(null);
-  const [isComplete, setComplete] = useState(false);
+  const [data, setData] = useRecoilState(dataState);
 
   const handler = (e) => {
     const files = e.target.files;
     const fileReader = new FileReader();
 
-    fileReader.onload = () => console.log(fileReader.result);
+    fileReader.onload = () =>
+      setData((prev) => ({
+        ...prev,
+        template: fileReader.result,
+      }));
     fileReader.readAsText(files[0]);
-
-    setComplete(true);
   };
 
   return (
     <div className="h-96 w-full">
-      {isComplete ? (
+      {data.template ? (
         <div className="flex size-full select-none items-center justify-center rounded border-2 border-dashed border-blue-500 text-blue-500">
           Complete!
         </div>

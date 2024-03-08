@@ -1,21 +1,32 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import { useRecoilState, useSetRecoilState } from 'recoil';
+
+import { textState } from '@/stores/textState';
+import { dataState } from '@/stores/dataState';
 
 function Matrix() {
   const [tab, setTab] = useState(1);
-  const [isTranspose, setTranspose] = useState(false);
-  const [text, setText] = useState('');
+  const [text, setText] = useRecoilState(textState);
+  const setData = useSetRecoilState(dataState);
 
   const matrix = useMemo(() => {
-    const tempMatrix = text
+    const tempMatrix = text.value
       .split(/\n|\r/)
       .filter(Boolean)
       .map((row) => row.split(/\t/));
 
-    if (!isTranspose) return tempMatrix;
+    if (!text.isTranspose) return tempMatrix;
 
     const transposedMatrix = tempMatrix[0].map((_, i) => tempMatrix.map((row) => row[i]));
     return transposedMatrix;
-  }, [text, isTranspose]);
+  }, [text]);
+
+  useEffect(() => {
+    setData((prev) => ({
+      ...prev,
+      matrix: [...matrix],
+    }));
+  }, [matrix]);
 
   return (
     <div className="relative h-96 w-full">
@@ -29,7 +40,13 @@ function Matrix() {
       </div>
       <div className="absolute bottom-full right-0">
         <input
-          onChange={(e) => setTranspose(e.target.checked)}
+          checked={text.isTranspose}
+          onChange={(e) =>
+            setText((prev) => ({
+              ...prev,
+              isTranspose: e.target.checked,
+            }))
+          }
           id="transpose"
           type="checkbox"
           className="mr-1"
@@ -41,8 +58,13 @@ function Matrix() {
       <div className="size-full overflow-auto rounded rounded-ss-none border-2">
         {tab === 1 && (
           <textarea
-            value={text}
-            onChange={(e) => setText(e.target.value)}
+            value={text.value}
+            onChange={(e) =>
+              setText((prev) => ({
+                ...prev,
+                value: e.target.value,
+              }))
+            }
             className="box-border size-full resize-none pl-2 outline-none"
           />
         )}

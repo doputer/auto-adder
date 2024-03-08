@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useRecoilState } from 'recoil';
 
 import StepButton from '@/components/StepButton';
+import { stepState } from '@/stores/stepState';
 
 const percentage = {
   1: 'w-0',
@@ -9,7 +10,7 @@ const percentage = {
 };
 
 function Progress() {
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useRecoilState(stepState);
 
   return (
     <div className="relative h-1 rounded bg-gray-200">
