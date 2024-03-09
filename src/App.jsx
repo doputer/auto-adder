@@ -11,7 +11,7 @@ function App() {
 
   return (
     <div className="flex h-screen w-screen items-center justify-center bg-violet-500">
-      <div className="w-full max-w-2xl space-y-16 rounded-xl bg-white p-8">
+      <div className="w-full max-w-2xl space-y-16 rounded-xl bg-white p-8 text-gray-700">
         <Progress />
         {step === 1 && <Upload />}
         {step === 2 && <Matrix />}
