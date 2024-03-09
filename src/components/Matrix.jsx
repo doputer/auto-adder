@@ -22,50 +22,36 @@ function Matrix() {
   }, [text]);
 
   useEffect(() => {
-    setData((prev) => ({
-      ...prev,
-      matrix: [...matrix],
-    }));
+    setData((prev) => ({ ...prev, matrix: [...matrix] }));
   }, [matrix]);
 
   return (
     <div className="relative h-96 w-full">
-      <div className="absolute bottom-full left-0 flex w-48 divide-x-2 rounded-t border-2 border-b-0">
-        <button onClick={() => setTab(1)} className={`flex-1 ${tab === 1 && 'text-blue-500'}`}>
-          Textarea
-        </button>
-        <button onClick={() => setTab(2)} className={`flex-1 ${tab === 2 && 'text-blue-500'}`}>
-          Table
-        </button>
+      <div className="absolute bottom-full left-0 flex w-full select-none items-center justify-between">
+        <div className="flex w-48 divide-x-2 border-2 border-b-0">
+          <button onClick={() => setTab(1)} className={`flex-1 ${tab === 1 && 'text-blue-500'}`}>
+            Textarea
+          </button>
+          <button onClick={() => setTab(2)} className={`flex-1 ${tab === 2 && 'text-blue-500'}`}>
+            Table
+          </button>
+        </div>
+        <div className="space-x-1">
+          <input
+            checked={text.isTranspose}
+            onChange={(e) => setText((prev) => ({ ...prev, isTranspose: e.target.checked }))}
+            id="transpose"
+            type="checkbox"
+          />
+          <label htmlFor="transpose">Transpose</label>
+        </div>
       </div>
-      <div className="absolute bottom-full right-0">
-        <input
-          checked={text.isTranspose}
-          onChange={(e) =>
-            setText((prev) => ({
-              ...prev,
-              isTranspose: e.target.checked,
-            }))
-          }
-          id="transpose"
-          type="checkbox"
-          className="mr-1"
-        />
-        <label htmlFor="transpose" className="select-none">
-          Transpose
-        </label>
-      </div>
-      <div className="size-full overflow-auto rounded rounded-ss-none border-2">
+      <div className="size-full overflow-auto border-2">
         {tab === 1 && (
           <textarea
             value={text.value}
-            onChange={(e) =>
-              setText((prev) => ({
-                ...prev,
-                value: e.target.value,
-              }))
-            }
-            className="box-border size-full resize-none pl-2 outline-none"
+            onChange={(e) => setText((prev) => ({ ...prev, value: e.target.value }))}
+            className="box-border size-full resize-none p-1 outline-none"
           />
         )}
         {tab === 2 && (
@@ -75,7 +61,7 @@ function Matrix() {
               {matrix.map((row, i) => (
                 <tr key={i} className="divide-x">
                   {row.map((col, j) => (
-                    <td key={j} className="text-nowrap pl-2">
+                    <td key={j} className="text-nowrap p-1">
                       {col}
                     </td>
                   ))}
