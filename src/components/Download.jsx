@@ -8,8 +8,8 @@ import { toHtml } from 'hast-util-to-html';
 import { dataState } from '@/stores/dataState';
 
 const createFile = (tree, data) => {
-  const filename = data[0] + '.html';
-  const pairs = data.slice(1).map((el, index) => [new RegExp(index), el]);
+  const filename = data[0];
+  const pairs = data.slice(1).map((el, index) => [new RegExp(`_${index}_`), el]);
   const copiedTree = JSON.parse(JSON.stringify(tree));
 
   findAndReplace(copiedTree, pairs);
@@ -23,11 +23,10 @@ function Download() {
   const data = useRecoilValue(dataState);
 
   const downloadLinks = useMemo(() => {
-    const tree = fromHtml(data.template);
-    const links = data.matrix.map((el) => {
-      const [filename, file] = createFile(tree, el);
-
-      return createElement(
+    const tree = fromHtml(data.template, { fragment: true });
+    const createdFiles = data.matrix.map((row) => createFile(tree, row));
+    const links = createdFiles.map(([filename, file]) => {
+      const link = createElement(
         'a',
         {
           key: filename,
@@ -37,6 +36,10 @@ function Download() {
         },
         filename
       );
+
+      URL.revokeObjectURL(file);
+
+      return link;
     });
 
     return links;
