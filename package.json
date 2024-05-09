@@ -3,13 +3,15 @@
   "version": "0.1.0",
   "type": "module",
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "poststart": "prettier --write dist"
   },
   "license": "MIT",
   "dependencies": {
     "hast-util-find-and-replace": "^5.0.1",
     "hast-util-from-html": "^2.0.1",
     "hast-util-to-html": "^9.0.0",
-    "inquirer": "^9.2.20"
+    "inquirer": "^9.2.20",
+    "prettier": "^3.2.5"
   }
 }
