@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "type": "module",
   "scripts": {
+    "prestart": "mkdir -p dist",
     "start": "node index.js",
     "poststart": "prettier --write dist"
   },
