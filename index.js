@@ -9,38 +9,30 @@ import { toHtml } from 'hast-util-to-html';
 const __dirname = path.resolve();
 
 const createAST = (filePath) => {
-  const html = fs.readFileSync(path.resolve(__dirname, filePath), {
-    encoding: 'utf-8',
-  });
-  const ast = fromHtml(html, {
-    fragment: true,
-  });
+  const html = fs.readFileSync(path.resolve(__dirname, filePath), { encoding: 'utf-8' });
+  const ast = fromHtml(html, { fragment: true });
 
   return ast;
 };
 
-const createArray = (filePath) => {
-  const tsv = fs.readFileSync(path.resolve(__dirname, filePath), {
-    encoding: 'utf-8',
-  });
+const createArray = (filePath, delimiter = /\t/) => {
+  const tsv = fs.readFileSync(path.resolve(__dirname, filePath), { encoding: 'utf-8' });
   const array = tsv
     .split(/\n|\r/)
     .filter(Boolean)
-    .map((row) => row.split(/\t/));
+    .map((row) => row.split(delimiter));
 
   return array;
 };
 
 const transposeArray = (array) => array[0].map((_, i) => array.map((row) => row[i]));
 
-const createHTML = async (ast, data) => {
-  const filename = data[0];
-  const regexp = data.slice(1).map((el, index) => [new RegExp(index), el]);
-  const obj = JSON.parse(JSON.stringify(ast));
+const createHTML = (ast, filename, row) => {
+  const regexp = row.map((col, index) => [new RegExp(`\\[${index}\\]`), col]);
 
-  findAndReplace(obj, regexp);
+  findAndReplace(ast, regexp);
 
-  fs.writeFileSync(path.resolve(__dirname, `dist/${filename}.html`), toHtml(obj));
+  fs.writeFileSync(path.resolve(__dirname, `dist/${filename}.html`), toHtml(ast));
 };
 
 const prompt = async () => {
@@ -80,9 +72,11 @@ const prompt = async () => {
     },
   ]);
 
-  array.forEach((data) => {
-    if (!selected.includes(data[0])) return;
-    createHTML(ast, data);
+  array.forEach((row) => {
+    const [filename, ...rest] = row;
+
+    if (!selected.includes(filename)) return;
+    createHTML(JSON.parse(JSON.stringify(ast)), filename, rest);
   });
 };
 
